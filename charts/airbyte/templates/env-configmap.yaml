@@ -22,10 +22,10 @@ data:
   AIRBYTE_URL: {{ .Values.global.airbyteUrl | quote }}
   {{- end }}
 
-  AIRBYTE_SERVER_HOST: {{ .Release.Name }}-airbyte-server-svc:{{ .Values.service.port }}
+  AIRBYTE_SERVER_HOST: {{ .Release.Name }}-airbyte-server-svc:{{ .Values.server.service.port }}
   API_URL: {{ .Values.webapp.api.url }}
   CONNECTOR_BUILDER_API_URL: {{ index .Values.webapp "connector-builder-server" "url" | quote }}
-  CONFIG_API_HOST: http://{{ .Release.Name }}-airbyte-server-svc:{{ .Values.service.port }} # temporary solution for oss kube deploys for airbyte api server until that server is wrapped into the config server
+  CONFIG_API_HOST: http://{{ .Release.Name }}-airbyte-server-svc:{{ .Values.server.service.port }} # temporary solution for oss kube deploys for airbyte api server until that server is wrapped into the config server
   CONFIG_ROOT: /configs
   CONFIGS_DATABASE_MINIMUM_FLYWAY_MIGRATION_VERSION: "0.35.15.001"
   DATA_DOCKER_MOUNT: airbyte_data
@@ -33,7 +33,7 @@ data:
   {{- include "airbyte.database.configVars" . | nindent 2 }}
   KEYCLOAK_DATABASE_URL: {{ include "airbyte.keycloak.database.url" . | quote }}
   GOOGLE_APPLICATION_CREDENTIALS: {{ include "airbyte.gcpLogCredentialsPath" . | quote }}
-  INTERNAL_API_HOST: http://{{ .Release.Name }}-airbyte-server-svc:{{ .Values.service.port }}
+  INTERNAL_API_HOST: http://{{ .Release.Name }}-airbyte-server-svc:{{ .Values.server.service.port }}
   WORKLOAD_API_HOST: http://{{ .Release.Name }}-workload-api-server-svc:{{ index .Values "workload-api-server" "service" "port" }}
 
 
@@ -68,9 +68,9 @@ data:
   AIRBYTE_API_HOST: {{ printf "%s/api/public" .Values.global.airbyteUrl | quote }}
     {{- end }}
   {{- else if (eq .Values.global.edition "community")}}
-  AIRBYTE_API_HOST: http://localhost:{{ .Values.service.port }}/api/public
+  AIRBYTE_API_HOST: http://localhost:{{ .Values.server.service.port }}/api/public
   {{- else }}
-  AIRBYTE_API_HOST: http://{{ .Release.Name }}-airbyte-server-svc:{{ .Values.service.port }}/api/public
+  AIRBYTE_API_HOST: http://{{ .Release.Name }}-airbyte-server-svc:{{ .Values.server.service.port }}/api/public
   {{- end }}
 
   {{- if $.Values.global.jobs.kube.annotations }}

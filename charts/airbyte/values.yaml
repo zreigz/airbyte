@@ -725,6 +725,9 @@ server:
   ##   DATABASE_PORT: 5432
   # -- Supply extra env variables to main container using simplified notation
   env_vars: {}
+  service:
+    port: 9000
+
 
 ## @section Worker Parameters
 
